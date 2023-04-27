@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hone irrigation system</title>
+    <style>
+      /* Define the blinking animation */
+      @keyframes blink {
+        0% { color: red; }
+        50% { color: white; }
+        100% { color: red; }
+      }
+
+      /* Apply the animation to the h1 element */
+      h1 {
+        animation: blink 1s infinite;
+      }
+    </style>
+</head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+<div>
+    <h1 th:if="${waterPumpOff}">Watter pump is not working!</h1>
+    <h1 th:if="${deviceOff}">Device is offline!</h1>
+    <div>
+        <div id="gauge_div_basil" style="display: inline-block"></div>
+        <div id="chart_div_basil" style="display: inline-block"></div>
+    </div>
+    <div>
+        <div id="gauge_div_parsley" style="display: inline-block"></div>
+        <div id="chart_div_parsley" style="display: inline-block"></div>
+    </div>
+    <div>
+        <div id="gauge_div_empty" style="display: inline-block"></div>
+        <div id="chart_div_empty" style="display: inline-block"></div>
+    </div>
+
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.load('current', {'packages':['gauge']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+
+        function drawCharts(){
+            drawGaugeChart('Basil', [[${basilLatestValue}]], 35, 47, 60, 'gauge_div_basil');
+            drawLineChart([[${basilData}]],'Basil', 'chart_div_basil');
+            drawGaugeChart('Parsley', [[${parsleyLatestValue}]], 25, 35, 50, 'gauge_div_parsley');
+            drawLineChart([[${parsleyChartData}]],'Parsley', 'chart_div_parsley');
+            drawGaugeChart('Empty', [[${emptyLatestValue}]], 15, 25, 30, 'gauge_div_empty');
+            drawLineChart([[${emptyChartData}]],'Empty', 'chart_div_empty');
+        }
+
+        function drawLineChart(chartData, plant, htmlElementId) {
+            const arrayOfArrays = chartData.map(obj => [new Date(obj.time), obj.moisture]);
+            arrayOfArrays.unshift(['Date', 'Value']);
+
+            var data = google.visualization.arrayToDataTable(arrayOfArrays);
+            var options = {
+                title: "Moisture in "+ plant,
+                pointSize: 10,
+                pointShape: 'square',
+                width: 1500
+            };
+            var chart = new google.visualization.LineChart(document.getElementById(htmlElementId));
+            chart.draw(data, options);
+        }
+
+        function drawGaugeChart(plant, latestValue, redTop, yellowTop, greenTop, htmlElementId) {
+          var data = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            [ plant , latestValue ]
+          ]);
+
+          var options = {
+            width: 180, height: 180,
+            redFrom: 0, redTo: redTop,
+            yellowFrom: redTop, yellowTo: yellowTop,
+            greenFrom: yellowTop, greenTo: greenTop,
+            minorTicks: 5
+          };
+
+          var chart = new google.visualization.Gauge(document.getElementById(htmlElementId));
+
+          chart.draw(data, options);
+        }
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>

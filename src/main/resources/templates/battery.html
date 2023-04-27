@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hone irrigation system</title>
+</head>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Died At</th>
+        <th>Duration (min) </th>
+        <th>Duration (h) </th>
+        <th>Duration (days) </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="batteryLife : ${batteryLifeList}">
+        <td th:text="${batteryLife.diedAt}"></td>
+        <td th:text="${batteryLife.durability.toMinutes()}"> Minutes</td>
+        <td th:text="${batteryLife.durability.toHours()}"> Hours</td>
+        <td th:text="${batteryLife.durability.toDays()}"> Days</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
