@@ -105,7 +105,7 @@ public class MeasurementServiceIntegrationTest {
     @Test
     public void givenExistingMeasurement_whenFindingById_thenReturnFoundMeasurement() {
         // Given
-        Measurement measurement = measurement(50.0, 1000, "basil", now().minus(1, HOURS));
+        Measurement measurement = measurement(50.0, 1000, "basil", now().minus(1, HOURS).truncatedTo(SECONDS));
         measurement = measurementRepository.save(measurement);
 
         // When
@@ -136,7 +136,7 @@ public class MeasurementServiceIntegrationTest {
     public void givenFakeId_whenRemovingById_thenReturnNull() {
         // Given
         Measurement measurement = measurement(50.0, 1000, "basil", now().minus(1, HOURS));
-        measurement = measurementRepository.save(measurement);
+        measurementRepository.save(measurement);
         long fakeId = 1000;
 
         // When

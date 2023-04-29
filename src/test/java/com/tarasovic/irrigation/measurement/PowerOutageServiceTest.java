@@ -14,6 +14,7 @@ import java.util.List;
 import static com.tarasovic.irrigation.measurement.Measurement.measurement;
 import static java.time.Instant.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -38,9 +39,9 @@ class PowerOutageServiceTest {
     public void givenMeasurementsWithPowerOutages_whenFindingPowerOutages_thenCorrectPowerOutageFound() {
         Measurement measurement1 = measurement(45.0, 44444, "basil", now());
         measurementRepository.save(measurement1);
-        Measurement measurement2 = measurement(55.0, 55555, "basil", now().plus(30, MINUTES));
+        Measurement measurement2 = measurement(55.0, 55555, "basil", now().plus(30, MINUTES).truncatedTo(SECONDS));
         measurementRepository.save(measurement2);
-        Measurement measurement3 = measurement(55.0, 55555, "basil", now().plus(30 + 182, MINUTES));
+        Measurement measurement3 = measurement(55.0, 55555, "basil", now().plus(30 + 182, MINUTES).truncatedTo(SECONDS));
         measurementRepository.save(measurement3);
         measurementRepository.save(measurement(65.0, 66666, "basil", now().plus(30 + 182 + 30, MINUTES)));
 
@@ -58,9 +59,9 @@ class PowerOutageServiceTest {
         measurementRepository.save(measurement(45.0, 44444, "basil", now));
         measurementRepository.save(measurement(55.0, 55555, "basil", now.plus(30, MINUTES)));
         measurementRepository.save(measurement(55.0, 55555, "basil", now.plus(30 + 182, MINUTES)));
-        Measurement measurement1 = measurement(65.0, 66655, "basil", now.plus(30 + 182 + 45, MINUTES));
+        Measurement measurement1 = measurement(65.0, 66655, "basil", now.plus(30 + 182 + 45, MINUTES).truncatedTo(SECONDS));
         measurementRepository.save(measurement1);
-        Measurement measurement2 = measurement(65.0, 66666, "basil", now.plus(30 + 182 + 45 + 182, MINUTES));
+        Measurement measurement2 = measurement(65.0, 66666, "basil", now.plus(30 + 182 + 45 + 182, MINUTES).truncatedTo(SECONDS));
         measurementRepository.save(measurement2);
 
         List<PowerOutage> batteryLifeTimes = powerOutageService.findPowerOutages();
@@ -73,7 +74,7 @@ class PowerOutageServiceTest {
     @Test
     public void givenMeasurements_whenGettingStartOfMeasurements_thenCorrectStartReturned() {
         measurementRepository.save(measurement(40.0, 44444, "basil", now().plus(30, MINUTES)));
-        Measurement measurement = measurement(33.0, 33333, "basil", now());
+        Measurement measurement = measurement(33.0, 33333, "basil", now().truncatedTo(SECONDS));
         measurementRepository.save(measurement);
 
         Instant startOfMeasurements = powerOutageService.getStartOfMeasurements();
