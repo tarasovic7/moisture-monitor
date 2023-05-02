@@ -1,0 +1,12 @@
+#File location: /etc/systemd/system/moisture.service
+[Unit]
+Description=Java moisture controller
+After=syslog.target
+
+[Service]
+User=pi
+ExecStart=java -jar /home/pi/moisture-0.0.1-SNAPSHOT.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
