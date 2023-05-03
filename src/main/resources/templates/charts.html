@@ -30,8 +30,8 @@
         <div id="chart_div_parsley" style="display: inline-block"></div>
     </div>
     <div>
-        <div id="gauge_div_empty" style="display: inline-block"></div>
-        <div id="chart_div_empty" style="display: inline-block"></div>
+        <div id="gauge_div_thymus" style="display: inline-block"></div>
+        <div id="chart_div_thymus" style="display: inline-block"></div>
     </div>
 
 
@@ -48,8 +48,8 @@
             drawLineChart([[${basilData}]],'Basil', 'chart_div_basil');
             drawGaugeChart('Parsley', [[${parsleyLatestValue}]], 25, 35, 50, 'gauge_div_parsley');
             drawLineChart([[${parsleyChartData}]],'Parsley', 'chart_div_parsley');
-            drawGaugeChart('Empty', [[${emptyLatestValue}]], 15, 25, 30, 'gauge_div_empty');
-            drawLineChart([[${emptyChartData}]],'Empty', 'chart_div_empty');
+            drawGaugeChart('Thymus', [[${thymusLatestValue}]], 15, 20, 25, 'gauge_div_thymus');
+            drawLineChart([[${thymusChartData}]],'Thymus', 'chart_div_thymus');
         }
 
         function drawLineChart(chartData, plant, htmlElementId) {

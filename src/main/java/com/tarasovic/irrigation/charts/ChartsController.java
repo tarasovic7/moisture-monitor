@@ -24,8 +24,8 @@ public class ChartsController {
         model.addAttribute("basilLatestValue", measurementService.getLatestMoisture("basil"));
         model.addAttribute("parsleyChartData", measurementService.findFirst300OrderByTimeAtDesc("parsley"));
         model.addAttribute("parsleyLatestValue", measurementService.getLatestMoisture("parsley"));
-        model.addAttribute("emptyChartData", measurementService.findFirst300OrderByTimeAtDesc("empty"));
-        model.addAttribute("emptyLatestValue", measurementService.getLatestMoisture("empty"));
+        model.addAttribute("thymusChartData", measurementService.findFirst300OrderByTimeAtDesc("thymus"));
+        model.addAttribute("thymusLatestValue", measurementService.getLatestMoisture("thymus"));
         model.addAttribute("waterPumpOff", deviceStatusChecker.isWatterPumpOffline());
         model.addAttribute("deviceOff", deviceStatusChecker.isDeviceOffline());
         return "charts.html";
