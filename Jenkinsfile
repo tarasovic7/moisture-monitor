@@ -37,13 +37,24 @@ pipeline {
         }
         stage('Wait for service to start') {
             options {
-                timeout(time: 3, unit: 'MINUTES')
+                timeout(time: 4, unit: 'MINUTES')
             }
+
             steps {
-                sshagent(credentials:['pi-zero']) {
-                 sh '''
-                    ssh pi@192.168.0.201 "sudo journalctl -u moisture -f | grep 'Started IrrigationApplication'"
-                 '''
+                script {
+                    def ready = false
+                    while (!ready) {
+                      def log = null
+                       sshagent(credentials:['pi-zero']) {
+                           log = sh(script:'''  ssh pi@192.168.0.201 "sudo journalctl -u moisture -n 5"  ''', returnStdout: true).trim()
+                       }
+                      if (log.contains('Started IrrigationApplication')) {
+                        ready = true
+                      } else {
+                        echo "Waiting for application to start..."
+                        sleep 10
+                      }
+                    }
                 }
             }
         }
