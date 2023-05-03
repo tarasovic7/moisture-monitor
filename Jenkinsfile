@@ -35,6 +35,18 @@ pipeline {
                 }
             }
         }
+        stage('Wait for service to start') {
+            options {
+                timeout(time: 3, unit: 'MINUTES')
+            }
+            steps {
+                sshagent(credentials:['pi-zero']) {
+                 sh '''
+                    ssh pi@192.168.0.201 "sudo journalctl -u moisture -f | grep 'Started IrrigationApplication'"
+                 '''
+                }
+            }
+        }
     }
     post {
         success {
